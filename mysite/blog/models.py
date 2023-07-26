@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -8,6 +9,7 @@ class Post(models.Model):
         DRAFT = 'DF', '게시되지 않음'
         PUBLISHED = 'PB', '게시됨'
     title = models.CharField(max_length=200)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     slug = models.SlugField(max_length=200)
     body = models.TextField()
     publish = models.DateTimeField(default=timezone.now)
