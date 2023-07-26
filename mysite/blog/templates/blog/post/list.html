@@ -2,7 +2,7 @@
 {% block title %}Post List{% endblock %}
 {% block content %}
     <h3>Post List</h3>
-    {% for post in posts %}
+    {% for post in page_obj %}
         <div class="card" style="width: 20rem;">
             <div class="card-body">
                 <h5 class="card-title"><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></h5>
@@ -10,4 +10,17 @@
             </div>
         </div>
     {% endfor %}
+    <br>
+    <p>Page</p>
+    <ul style="display: flex;list-style :none">
+        {% for page in paginator.page_range %}
+            {% if page == page_obj.number %}
+                <li style="margin: 3px;"><a style="text-decoration:none; color:black;"><b>{{ page }}</b></a>
+            </li>
+            {% else %}
+            <li style="margin: 3px;"><a style="text-decoration:none; color:blue;" href="?page={{ page }}">{{ page }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
 {% endblock %}
