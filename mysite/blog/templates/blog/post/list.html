@@ -1,5 +1,13 @@
-<h3>Post List</h3>
-
-{% for post in posts %}
-    <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a><br>
-{% endfor %}
+{% extends 'blog/base.html' %}
+{% block title %}Post List{% endblock %}
+{% block content %}
+    <h3>Post List</h3>
+    {% for post in posts %}
+        <div class="card" style="width: 20rem;">
+            <div class="card-body">
+                <h5 class="card-title"><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></h5>
+                <p class="card-text">{{ post.body }}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
