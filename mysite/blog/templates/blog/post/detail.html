@@ -1,5 +1,13 @@
-<h3>{{ post.title }}</h3>
+{% extends 'blog/base.html' %}
 
-<body>
-{{ post.body|linebreaks }}
-</body>
+{% block content %}
+    <div>
+        <div class="border-bottom border-dark">
+            <h3>{{ post.title }}</h3>
+        </div>
+        <br>
+        <div class="position-relative">
+            {{ post.body|linebreaks }}
+        </div>
+    </div>
+{% endblock content %}
