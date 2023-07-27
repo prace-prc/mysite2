@@ -9,6 +9,7 @@ class Post(models.Model):
     class Status(models.TextChoices):
         DRAFT = 'DF', '게시되지 않음'
         PUBLISHED = 'PB', '게시됨'
+
     title = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     slug = models.SlugField(max_length=200)
@@ -28,3 +29,13 @@ class Post(models.Model):
         indexes = [
             models.Index(fields=['-publish'])
         ]
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    name = models.CharField(max_length=25)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
