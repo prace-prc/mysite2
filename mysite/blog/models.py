@@ -48,3 +48,7 @@ class Comment(models.Model):
         indexes = [
             models.Index(fields=['created'])
         ]
+
+    def __str__(self):
+        return self.body
+
