@@ -33,5 +33,12 @@ def post_detail(request, post_id):
     return render(request, 'blog/post/detail.html', {'post': post})
 
 
-def post_share(request):
-    pass
+def post_share(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    title = post.title
+    body = post.body
+
+    return render(request, 'blog/post/share.html', {'title': title, 'body': body})
+
+
