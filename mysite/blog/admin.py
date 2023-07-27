@@ -13,3 +13,4 @@ class PostAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['post', 'name', 'email', 'body', 'active']
     list_filter = ['active', 'created', 'updated']
+    search_fields = ['name', 'email', 'body']
