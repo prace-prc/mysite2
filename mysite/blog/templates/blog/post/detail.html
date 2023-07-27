@@ -9,5 +9,6 @@
         <div class="position-relative">
             {{ post.body|linebreaks }}
         </div>
+    <p><a href="{% url 'blog:post_share' post.id %}">Send this article to email</a></p>
     </div>
 {% endblock content %}
