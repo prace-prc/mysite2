@@ -1,8 +1,11 @@
 from django.core import paginator
+from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.shortcuts import render
+
+from .forms import EmailPostForm
 from .models import Post
 
 
@@ -35,7 +38,18 @@ def post_detail(request, post_id):
 
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    sent = False
 
-    return render(request, 'blog/post/share.html', {'post' : post})
+    if request.method == 'POST':
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = f"{data['name']}님이 {post.title}을 추천했습니다"
+            message = f"{post_url}"
+            send_mail(subject, message, 'myemail@gmail.com', [data['to']])
+            sent = True
+    else:
+        form = EmailPostForm()
 
-
+    return render(request, 'blog/post/share.html', {'post': post, 'form': form, 'sent': sent})
