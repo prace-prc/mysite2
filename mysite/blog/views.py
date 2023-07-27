@@ -45,9 +45,9 @@ def post_share(request, post_id):
         if form.is_valid():
             data = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = f"{data['name']}님이 {post.title}을 추천했습니다"
-            message = f"{post_url}"
-            send_mail(subject, message, 'myemail@gmail.com', [data['to']])
+            subject = f"{data['sender']} has recommended {post.title}"
+            message = f"hello {post_url}"
+            send_mail(subject, message, [data['email']], [data['to']])
             sent = True
     else:
         form = EmailPostForm()
