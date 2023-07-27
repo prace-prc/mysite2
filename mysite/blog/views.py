@@ -1,7 +1,7 @@
 from django.core import paginator
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
@@ -53,18 +53,20 @@ def post_share(request, post_id):
             sent = True
     else:
         form = EmailPostForm()
-
-    return render(request, 'blog/post/share.html', {'post': post, 'form': form, 'sent': sent})
+    comments = post.comments.filter(active=True)
+    return render(request, 'blog/post/share.html', {'post': post, 'form': form, 'sent': sent, 'comments': comments})
 
 
 @require_POST
 def post_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    form = CommentModelForm(data=request.POST)
+    comments = post.comments.filter(active=True)
+    form = CommentModelForm(request.POST)
     comment = None
     if form.is_valid():
         comment = form.save(commit=False)
         comment.post = post
         comment.save()
+        return redirect(post)
 
-    return render(request, 'blog/post/detail.html', {'post': post, 'form': form})
+    return render(request, 'blog/post/detail.html', {'post': post, 'form': form, 'comments': comments})

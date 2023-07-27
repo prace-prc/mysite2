@@ -1,5 +1,5 @@
 <h3>Comment</h3>
-<form action="{% url 'blog:post_comment' post.id %}">
+<form action="{% url 'blog:post_comment' post.id %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Done">
