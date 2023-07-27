@@ -5,18 +5,23 @@ from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
+from taggit.models import Tag
 
 from .forms import EmailPostForm, CommentModelForm
 from .models import Post
 
 
 # Create your views here.
-def post_list(request):
+def post_list(request, tag_slug=None):
     posts = Post.objects.filter(status=Post.Status.PUBLISHED)
     page = request.GET.get('page')
 
-    paginator = Paginator(posts, 3)
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
 
+    paginator = Paginator(posts, 3)
     try:
         page_obj = paginator.page(page)
     except PageNotAnInteger:

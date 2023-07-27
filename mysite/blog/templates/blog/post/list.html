@@ -6,7 +6,13 @@
         <div class="card" style="width: 20rem;">
             <div class="card-body">
                 <h5 class="card-title"><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></h5>
-                <p class="card-text">{{ post.body }}</p>
+                <p class="card-text">{{ post.body }}<br>
+                    Tags :  {% for tag in post.tags.all %}
+                        <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+                            {{ tag.name }}
+                        </a>
+                        {% if not forloop.last %},{% endif %}
+                    {% endfor %}</p>
             </div>
         </div>
     {% endfor %}
@@ -16,10 +22,11 @@
         {% for page in paginator.page_range %}
             {% if page == page_obj.number %}
                 <li style="margin: 3px;"><a style="text-decoration:none; color:black;"><b>{{ page }}</b></a>
-            </li>
+                </li>
             {% else %}
-            <li style="margin: 3px;"><a style="text-decoration:none; color:blue;" href="?page={{ page }}">{{ page }}</a>
-            </li>
+                <li style="margin: 3px;"><a style="text-decoration:none; color:blue;"
+                                            href="?page={{ page }}">{{ page }}</a>
+                </li>
             {% endif %}
         {% endfor %}
     </ul>
