@@ -9,15 +9,16 @@
         <div class="position-relative">
             {{ post.body|linebreaks }}
         </div>
-    <p><a href="{% url 'blog:post_share' post.id %}">Send this article to email</a></p>
-    <div class="border-top border-dark">
+        <p><a href="{% url 'blog:post_share' post.id %}">Send this article to email</a></p>
+        <div class="border-top border-dark">
             {% include 'blog/post/comment_form.html' %}
         </div>
-    <div class="border-top border-dark">
+        <br>
+        <div class="border-top border-dark">
             {% for comment in comments %}
-                {{ comment.name }}: <br>
-                {{ comment.body }}
+                <b>{{ comment.name }}</b> : <br>
+                {{ comment.body |linebreaks }} <br>
             {% endfor %}
-    </div>
+        </div>
     </div>
 {% endblock content %}

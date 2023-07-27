@@ -35,7 +35,8 @@ def post_list(request):
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     form = CommentModelForm(data=request.POST)
-    return render(request, 'blog/post/detail.html', {'post': post, 'form': form})
+    comments = post.comments.filter(active=True)
+    return render(request, 'blog/post/detail.html', {'post': post, 'form': form, 'comments': comments})
 
 
 def post_share(request, post_id):
@@ -60,7 +61,7 @@ def post_share(request, post_id):
 @require_POST
 def post_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    comments = post.comments.filter(active=True)
+
     form = CommentModelForm(request.POST)
     comment = None
     if form.is_valid():
@@ -69,4 +70,4 @@ def post_comment(request, post_id):
         comment.save()
         return redirect(post)
 
-    return render(request, 'blog/post/detail.html', {'post': post, 'form': form, 'comments': comments})
+    return render(request, 'blog/post/detail.html', {'post': post, 'form': form})
